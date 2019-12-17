@@ -5,6 +5,8 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Pageable;
 import querydsl.vo.CityHotelVo;
+import querydsl.vo.CityHotelVo2;
+import querydsl.vo.CityHotelVo3;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface TCityRepoCustom {
      * @param predicate 查询条件
      * @return 查询实体
      */
-    public List<Tuple> findCityAndHotel(Predicate predicate);
+    List<Tuple> findCityAndHotel(Predicate predicate);
 
     /**
      * 关联查询示例,查询出城市和对应的旅店
@@ -24,14 +26,14 @@ public interface TCityRepoCustom {
      * @param predicate 查询条件
      * @return 查询实体
      */
-    public QueryResults<Tuple> findCityAndHotelPage(Predicate predicate, Pageable pageable);
+    QueryResults<Tuple> findCityAndHotelPage(Predicate predicate, Pageable pageable);
 
     // 自定义返回
-    public List<CityHotelVo> findcityHotel();
+    List<CityHotelVo> findcityHotel();
 
     List<CityHotelVo> findcityHotel_2();
 
-    List<CityHotelVo> findcityHotel_3();
+    List<CityHotelVo2> findcityHotel_3();
 
     long count1();
 
@@ -39,5 +41,5 @@ public interface TCityRepoCustom {
 
     List<Tuple> count3();
 
-
+    List<CityHotelVo3> findcityHotel_31();
 }

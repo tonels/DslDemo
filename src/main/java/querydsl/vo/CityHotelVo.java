@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CityHotelVo implements Serializable {
 
-    private static final long serialVersionUID = 2546523L;
+    private static final long serialVersionUID = 2452544444444L;
 
     private Integer id;
 
@@ -28,6 +28,7 @@ public class CityHotelVo implements Serializable {
 
     public CityHotelVo() {
     }
+
 
     public CityHotelVo(Integer id, String cityName, String hotelName, String address) {
         this.id = id;

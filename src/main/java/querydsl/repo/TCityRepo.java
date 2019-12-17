@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import querydsl.entity.TCity;
 import querydsl.repo.customer.TCityRepoCustom;
 
-@Repository
+//@Repository
 public interface TCityRepo extends JpaRepository<TCity,Long>, QuerydslPredicateExecutor<TCity>, TCityRepoCustom {
 
 }

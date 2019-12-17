@@ -10,13 +10,15 @@ import org.springframework.data.domain.Pageable;
 import querydsl.entity.QTCity;
 import querydsl.entity.QTHotel;
 import querydsl.vo.CityHotelVo;
+import querydsl.vo.CityHotelVo2;
+import querydsl.vo.CityHotelVo3;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TCityRepoImpl implements TCityRepoCustom{
+public class TCityRepoImpl implements TCityRepoCustom {
 
     @PersistenceContext
     private EntityManager em;
@@ -50,7 +52,6 @@ public class TCityRepoImpl implements TCityRepoCustom{
     }
 
     /**
-     *
      * @return
      */
     @Override
@@ -73,6 +74,7 @@ public class TCityRepoImpl implements TCityRepoCustom{
 
     /**
      * todo 这里暂未调通
+     *
      * @return
      */
     @Override
@@ -89,18 +91,34 @@ public class TCityRepoImpl implements TCityRepoCustom{
         return results1;
     }
 
+    @Override
+    public List<CityHotelVo3> findcityHotel_31() {
+        JPAQuery<CityHotelVo3> query = new JPAQuery<>(em);
+        QTCity c = QTCity.tCity;
+        QTHotel h = QTHotel.tHotel;
+
+        List<CityHotelVo3> results1 = query.select(Projections.bean(CityHotelVo3.class,
+                h.name,
+                h.address)).from(c).leftJoin(h).on(c.id.eq(h.city)).fetchResults().getResults();
+        return results1;
+    }
+
     /**
      * todo 这里暂未调通
+     *
      * @return
      */
     @Override
-    public List<CityHotelVo> findcityHotel_3() {
+    public List<CityHotelVo2> findcityHotel_3() {
         JPAQuery<CityHotelVo> query = new JPAQuery<>(em);
         QTCity c = QTCity.tCity;
         QTHotel h = QTHotel.tHotel;
 
-        JPAQuery<CityHotelVo> on = query.select(Projections.bean(CityHotelVo.class)).from(c).leftJoin(h).on(c.id.eq(h.city));
-        List<CityHotelVo> results = on.fetchResults().getResults();
+        JPAQuery<CityHotelVo2> on = query.select(Projections
+                .bean(CityHotelVo2.class,
+                        c.id,
+                        h.address)).from(c).leftJoin(h).on(c.id.eq(h.city));
+        List<CityHotelVo2> results = on.fetchResults().getResults();
         return results;
     }
 

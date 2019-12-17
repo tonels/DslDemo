@@ -22,10 +22,7 @@ import querydsl.entity.TCity;
 import querydsl.repo.TCityRepo;
 import querydsl.util.PageBean;
 import querydsl.util.ResultBean;
-import querydsl.vo.CityHotelVo;
-import querydsl.vo.Vo1;
-import querydsl.vo.Vo2;
-import querydsl.vo.Vo3;
+import querydsl.vo.*;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -132,22 +129,20 @@ public class CityController {
 
         BooleanBuilder builder = this.builder1(vo);
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Order.asc("id")));
-        JPAQuery<Tuple> wSelect = query.select(
+
+        List<CityHotelVo> collect = query.select(
                 c.id,
                 c.name,
                 h.name,
-                h.address).from(c).leftJoin(h).on(c.id.eq(h.city)).where(builder);
-
-        wSelect.orderBy(new OrderSpecifier<>(Order.DESC, c.id));
-        QueryResults<Tuple> queryResults = wSelect.offset(pageRequest.getOffset()).limit(pageRequest.getPageSize()).fetchResults();
-
-        List<Tuple> tuples = queryResults.getResults();
-
-        List<CityHotelVo> cityHotelVos = this.trans1(tuples);
-
-        Page<CityHotelVo> page = new PageImpl<>(cityHotelVos, pageRequest, cityHotelVos.size());
-
-        return PageBean.ok(page.getTotalPages(), page.getTotalElements(), page.getContent());
+                h.address).from(c).leftJoin(h).on(c.id.eq(h.city))
+                .where(builder)
+                .orderBy(new OrderSpecifier<>(Order.DESC, c.id))
+                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize()).fetchResults().getResults()
+                .stream()
+                .map(CityHotelVo::new)
+                .collect(Collectors.toList());
+        PageImpl<CityHotelVo> cityHotelVos1 = new PageImpl<>(collect, pageRequest, collect.size());
+        return PageBean.ok(cityHotelVos1.getTotalPages(), cityHotelVos1.getTotalElements(), cityHotelVos1.getContent());
     }
 
     /**
@@ -194,7 +189,7 @@ public class CityController {
 
     /**
      * todo
-     * 此处 tuple -> vo 自动映射，无需手动映射
+     *
      *
      * @return
      */
@@ -206,7 +201,13 @@ public class CityController {
 
     @GetMapping("/s6-2")
     public ResultBean s6_2() {
-        List<CityHotelVo> cityHotelVos = tCityRepo.findcityHotel_3();
+        List<CityHotelVo2> cityHotelVos = tCityRepo.findcityHotel_3();
+        return ResultBean.ok(cityHotelVos);
+    }
+
+    @GetMapping("/s6-3")
+    public ResultBean s6_3() {
+        List<CityHotelVo3> cityHotelVos = tCityRepo.findcityHotel_31();
         return ResultBean.ok(cityHotelVos);
     }
 
@@ -277,6 +278,9 @@ public class CityController {
         }
         return list1;
     }
+    
+    
+    
 
 
 }
